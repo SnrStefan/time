@@ -42,15 +42,14 @@
 </head>
 <body>
 
-<div id="timezone-selector">
+<!-- <div id="timezone-selector">
   <label for="timezones">Выберите часовой пояс:</label>
   <select id="timezones">
     <option value="Asia/Chita">Забайкальское время (UTC+6)</option>
     <option value="Asia/Novosibirsk">Новосибирское время (UTC+2)</option>
     <option value="Europe/Moscow">Московское время (UTC+3)</option>
-    <!-- Добавьте остальные часовые пояса России -->
   </select>
-</div>
+</div> -->
 
 <div class="clock">
   <div id="hour-hand" class="hand"></div>
@@ -61,17 +60,17 @@
 <script>
     function changeTimezone(date, ianatz) {
 
-// suppose the date is 12:00 UTC
-var invdate = new Date(date.toLocaleString('en-US', {
-  timeZone: ianatz
-}));
+  // suppose the date is 12:00 UTC
+  var invdate = new Date(date.toLocaleString('en-US', {
+    timeZone: ianatz
+  }));
 
-// then invdate will be 07:00 in Toronto
-// and the diff is 5 hours
-var diff = date.getTime() - invdate.getTime();
+  // then invdate will be 07:00 in Toronto
+  // and the diff is 5 hours
+  var diff = date.getTime() - invdate.getTime();
 
-// so 12:00 in Toronto is 17:00 UTC
-return new Date(date.getTime() - diff); // needs to substract
+  // so 12:00 in Toronto is 17:00 UTC
+  return new Date(date.getTime() - diff); // needs to substract
 
 }
     // Функция для обновления времени на часах
