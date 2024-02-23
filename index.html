@@ -38,10 +38,6 @@
     height: 90px;
     background: red;
   }
-  #timezone-selector
-  {
-    display: none;
-  }
 </style>
 </head>
 <body>
@@ -49,9 +45,9 @@
 <div id="timezone-selector">
   <label for="timezones">Выберите часовой пояс:</label>
   <select id="timezones">
-    <option value="Asia/Chita">Забайкальское время (UTC+6)</option>
-    <option value="Asia/Novosibirsk">Новосибирское время (UTC+2)</option>
-    <option value="Europe/Moscow">Московское время (UTC+3)</option>
+    <option value="Asia/Chita">Забайкальское время</option>
+    <option value="Asia/Novosibirsk">Новосибирское время</option>
+    <option value="Europe/Moscow">Московское время</option>
   </select>
 </div>
 
@@ -62,58 +58,34 @@
 </div>
 
 <script>
-    function changeTimezone(date, ianatz) {
-
-  // suppose the date is 12:00 UTC
-  var invdate = new Date(date.toLocaleString('en-US', {
-    timeZone: ianatz
-  }));
-
-  // then invdate will be 07:00 in Toronto
-  // and the diff is 5 hours
-  var diff = date.getTime() - invdate.getTime();
-
-  // so 12:00 in Toronto is 17:00 UTC
-  return new Date(date.getTime() - diff); // needs to substract
-
-}
     // Функция для обновления времени на часах
-    function updateClock(timezone) {
-        var here = new Date();
-        var now = changeTimezone(here, timezone);
-        console.log(now);
-        console.log(timezone);
-        var hour = now.getHours();
-        var minute = now.getMinutes();
-        var second = now.getSeconds();
+function updateClock() {
+  var selectedTimezone = document.getElementById('timezones').value;
+  var now = new Date(new Date().toLocaleString("en-US", {timeZone: selectedTimezone}));
+  var hour = now.getHours();
+  var minute = now.getMinutes();
+  var second = now.getSeconds();
 
-        // Установка углов для стрелок
-        var hourAngle = (hour % 12) * 30 + (minute / 2);
-        var minuteAngle = minute * 6;
-        var secondAngle = second * 6;
+  // Установка углов для стрелок
+  var hourAngle = (hour % 12) * 30 + (minute / 2);
+  var minuteAngle = minute * 6;
+  var secondAngle = second * 6;
 
-        // Поворот стрелок
-        document.getElementById('hour-hand').style.transform = 'rotate(' + hourAngle + 'deg)';
-        document.getElementById('minute-hand').style.transform = 'rotate(' + minuteAngle + 'deg)';
-        document.getElementById('second-hand').style.transform = 'rotate(' + secondAngle + 'deg)';
-    }
-    // Инициализация часов при загрузке страницы
-    document.addEventListener('DOMContentLoaded', function() {
-    var selectedTimezone = document.getElementById('timezones').value;
-    console.log("при загрузке страницы "+selectedTimezone)
-    updateClock(selectedTimezone);
-    setInterval(function() {
-        updateClock(selectedTimezone);
-    }, 1000);
-    });
+  // Поворот стрелок
+  document.getElementById('hour-hand').style.transform = 'rotate(' + hourAngle + 'deg)';
+  document.getElementById('minute-hand').style.transform = 'rotate(' + minuteAngle + 'deg)';
+  document.getElementById('second-hand').style.transform = 'rotate(' + secondAngle + 'deg)';
+}
 
-    // Обновление выбранного часового пояса и времени на часах
-    document.getElementById('timezones').addEventListener('change', function(e) {
-    selectedTimezone = e.target.value;
-    console.log(selectedTimezone);
-    updateClock(selectedTimezone);
-    });
-    
+// Инициализация часов при загрузке страницы
+document.addEventListener('DOMContentLoaded', function() {
+  updateClock(); // Обновляем часы сразу при загрузке страницы
+  setInterval(updateClock, 1000); // Затем обновляем каждую секунду
+});
+
+// Обработчик события изменения выбора в выпадающем списке
+document.getElementById('timezones').addEventListener('change', updateClock);
+
     </script>
 
 </body>
